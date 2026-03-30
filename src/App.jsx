@@ -282,7 +282,7 @@ export default function ZodiacApp() {
           <div className="mb-8 flex gap-3 items-center">
             <Box sx={{ flex: 1 }}>
               <DatePicker
-                label="Select Your Birth Date"
+                label={lang === "en" ? "Select Your Birth Date" : "သင်၏ မွေးနေ့ကို ရွေးချယ်ပါ"}
                 value={birthDate ? dayjs(birthDate) : null}
                 onChange={(newValue) =>
                   setBirthDate(newValue ? newValue.format("YYYY-MM-DD") : "")
