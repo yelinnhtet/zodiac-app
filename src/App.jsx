@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { TextField, Box, Button } from "@mui/material";
 
 const getZodiacSign = (dateString) => {
   if (!dateString) return null;
@@ -274,21 +278,104 @@ export default function ZodiacApp() {
           </div>
         </div>
 
-        <div className="mb-8 flex gap-3">
-          <input
-            type="date"
-            value={birthDate}
-            onChange={(e) => setBirthDate(e.target.value)}
-            className={`rounded-xl p-2 w-full ${isDark ? "bg-white/20 text-white" : "bg-white text-black"}`}
-          />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div className="mb-8 flex gap-3 items-center">
+            <Box sx={{ flex: 1 }}>
+              <DatePicker
+                label="Select Your Birth Date"
+                value={birthDate ? dayjs(birthDate) : null}
+                onChange={(newValue) =>
+                  setBirthDate(newValue ? newValue.format("YYYY-MM-DD") : "")
+                }
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: "outlined",
+                    InputLabelProps: {
+                      sx: {
+                        color: isDark ? "#9ca3af" : "#6b7280",
+                        "&.Mui-focused": {
+                          color: "#a855f7",
+                        },
+                      },
+                    },
+                    sx: {
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "12px",
+                        backgroundColor: isDark ? "#374151" : "#ffffff",
+                        color: isDark ? "#ffffff" : "#000000",
+                        fontSize: "1rem",
+                        transition: "all 0.3s ease",
+                        "& fieldset": {
+                          borderColor: isDark ? "#6b7280" : "#e0e0e0",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: isDark ? "#a855f7" : "#9333ea",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#a855f7",
+                          borderWidth: "2px",
+                        },
+                      },
+                      "& .MuiOutlinedInput-input": {
+                        color: isDark ? "#ffffff" : "#000000",
+                      },
+                      "& .MuiInputBase-input::placeholder": {
+                        opacity: 0.7,
+                        color: isDark ? "#9ca3af" : "#6b7280",
+                      },
+                      "& .MuiInputAdornment-positionEnd svg": {
+                        color: isDark ? "#a855f7" : "#9333ea",
+                      },
+                      "& .MuiInputBase-input-Mui-disabled": {
+                        WebkitTextFillColor: isDark ? "#ffffff" : "#000000",
+                      },
+                    },
+                  },
+                  popper: {
+                    sx: {
+                      "& .MuiPaper-root": {
+                        backgroundColor: isDark ? "#1f2937" : "#ffffff",
+                        color: isDark ? "#ffffff" : "#000000",
+                        backgroundImage: "none",
+                      },
+                      "& .MuiCalendarPicker-root": {
+                        backgroundColor: isDark ? "#1f2937" : "#ffffff",
+                      },
+                      "& .MuiPickersDay-root": {
+                        color: isDark ? "#ffffff" : "#000000",
+                      },
+                      "& .MuiPickersDay-root.Mui-selected": {
+                        backgroundColor: "#a855f7",
+                        color: "#ffffff",
+                        "&:hover": {
+                          backgroundColor: "#9333ea",
+                        },
+                      },
+                      "& .MuiPickersDay-root:hover": {
+                        backgroundColor: isDark ? "rgba(168, 85, 247, 0.3)" : "rgba(147, 51, 234, 0.1)",
+                      },
+                      "& .MuiDayCalendar-header span": {
+                        color: isDark ? "#e5e7eb" : "#374151",
+                      },
+                      "& .MuiPickersToolbar-root": {
+                        backgroundColor: "#a855f7",
+                        color: "#ffffff",
+                      },
+                    },
+                  },
+                }}
+              />
+            </Box>
 
-          <button
-            onClick={() => setBirthDate("")}
-            className="px-4 py-2 rounded-xl bg-red-500 text-white"
-          >
-            Reset
-          </button>
-        </div>
+            <button
+              onClick={() => setBirthDate("")}
+              className="px-6 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition transform hover:scale-105 active:scale-95"
+            >
+              Reset
+            </button>
+          </div>
+        </LocalizationProvider>
 
         {detectedSign && (
           <div className="mb-6 text-center font-semibold text-green-400 text-lg">
